@@ -1,0 +1,17 @@
+{
+  "name": "good-bank",
+  "version": "1.0.0",
+  "description": "banking app for school.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "cory_martinez@rocketmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "lowdb": "^1.0.0",
+    "mongodb": "^3.7.4"
+  }
+}
