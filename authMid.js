@@ -7,13 +7,13 @@ const generateToken = (user) => {
 
 // Middleware for verifying JWT
 const verifyToken = (req, res, next) => {
-    const token = req.headers.authorization;
+    const token = req.headers.authorization.split(' ');
 
     if (!token) {
         return res.status(401).json({ message: 'No token provided' });
     }
 
-    jwt.verify(token, 'your_secret_key', (err, decoded) => {
+    jwt.verify(token[1], 'your_secret_key', (err, decoded) => {
         if (err) {
             return res.status(401).json({ message: 'Invalid token' });
         }

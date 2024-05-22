@@ -1,76 +1,109 @@
-function Withdraw(){
-  const [show, setShow]     = React.useState(true);
-  const [status, setStatus] = React.useState('');  
+function Withdraw() {
+  const [show, setShow] = React.useState(true);
+  const [status, setStatus] = React.useState('');
+  const [amount, setAmount] = React.useState('');
+
+  function handleWithdraw(email) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setStatus('Please login to withdraw');
+      return;
+    }
+  
+    fetch(`/account/update/${email}/-${amount}`, {
+      method: 'GET', // Assuming update endpoint is a GET request (verify with backend)
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.text())
+      .then((text) => {
+        try {
+          const data = JSON.parse(text);
+          let message = 'Withdrawal successful!';
+          if (data.error) { // Check for error message in the response
+            message = data.error;
+          }
+          setStatus(message);
+          setShow(false);
+          console.log('JSON:', data);
+        } catch (err) {
+          setStatus('Withdrawal failed');
+          console.log('err:', text);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setStatus('Withdrawal failed');
+      });
+  }
 
   return (
     <Card
-      bgcolor="success"
+      bgcolor="warning"
       header="Withdraw"
       status={status}
-      body={show ? 
-        <WithdrawForm setShow={setShow} setStatus={setStatus}/> :
-        <WithdrawMsg setShow={setShow} setStatus={setStatus}/>}
+      body={
+        show ? (
+          <WithdrawForm setShow={setShow} setStatus={setStatus} setAmount={setAmount} handleWithdraw={handleWithdraw} />
+        ) : (
+          <WithdrawMsg setShow={setShow} setStatus={setStatus} />
+        )
+      }
     />
-  )
+  );
 }
 
-function WithdrawMsg(props){
-  return(<>
-    <h5>Success</h5>
-    <button type="submit" 
-      className="btn btn-light" 
-      onClick={() => {
-        props.setShow(true);
-        props.setStatus('');
-      }}>
-        Withdraw again
-    </button>
-  </>);
+function WithdrawMsg(props) {
+  return (
+    <>
+      <h5>Success</h5>
+      <button
+        type="submit"
+        className="btn btn-light"
+        onClick={() => {
+          props.setShow(true);
+          props.setStatus('');
+        }}
+      >
+        Deposit again
+      </button>
+    </>
+  );
 }
 
-function WithdrawForm(props){
-  const [email, setEmail]   = React.useState('');
-  const [amount, setAmount] = React.useState('');
+function WithdrawForm(props) {
+  const [email, setEmail] = React.useState('');
 
-  function handle(){
-    fetch(`/account/update/${email}/-${amount}`)
-    .then(response => response.text())
-    .then(text => {
-        try {
-            const data = JSON.parse(text);
-            props.setStatus(JSON.stringify(data.value));
-            props.setShow(false);
-            console.log('JSON:', data);
-        } catch(err) {
-            props.setStatus('Deposit failed')
-            console.log('err:', text);
-        }
-    });
+  function handleWithdraw() {
+    if (!email) {
+      props.setStatus('Please enter your email');
+      return;
+    }
+    props.handleWithdraw(email);
   }
 
-
-  return(<>
-
-    Email<br/>
-    <input type="input" 
-      className="form-control" 
-      placeholder="Enter email" 
-      value={email} 
-      onChange={e => setEmail(e.currentTarget.value)}/><br/>
-
-    Amount<br/>
-    <input type="number" 
-      className="form-control" 
-      placeholder="Enter amount" 
-      value={amount} 
-      onChange={e => setAmount(e.currentTarget.value)}/><br/>
-
-    <button type="submit" 
-      className="btn btn-light" 
-      onClick={handle}>
+  return (
+    <>
+      <input
+        type="input"
+        className="form-control"
+        placeholder="Enter email"
+        value={email}
+        onChange={(e) => setEmail(e.currentTarget.value)}
+      />
+      <br />
+      <input
+        type="number"
+        className="form-control"
+        placeholder="Enter amount"
+        value={props.amount}
+        onChange={(e) => props.setAmount(e.currentTarget.value)}
+      />
+      <br />
+      <button type="submit" className="btn btn-light" onClick={handleWithdraw}>
         Withdraw
-    </button>
-
-  </>);
+      </button>
+    </>
+  );
 }
-

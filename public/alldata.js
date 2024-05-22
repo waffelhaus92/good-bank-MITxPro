@@ -4,7 +4,7 @@ function AllData() {
     React.useEffect(() => {
       const fetchData = async () => {
         try {
-          // Check for JWT token in local storage (assuming you store it there)
+          // Check for JWT token in local storage 
           const token = localStorage.getItem('token');
           let headers = {};
   
@@ -13,7 +13,7 @@ function AllData() {
               Authorization: `Bearer ${token}`,
             };
           }
-          
+
           console.log('Request Headers:', headers);
           const response = await fetch('/account/all', { headers });
         

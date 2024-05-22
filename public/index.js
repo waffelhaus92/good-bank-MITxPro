@@ -6,7 +6,7 @@ const logout = () => {
   // Redirect to the login page after 1 second
   setTimeout(() => {
     localStorage.removeItem('token');
-    window.location.href = '/login';
+    window.location.href = '/#/login/';
   }, 1000); 
 };
 
@@ -14,7 +14,7 @@ function Spa() {
   return (
     <HashRouter>
       <div>
-        <NavBar/>        
+        <NavBar logout={logout}/>        
         <UserContext.Provider value={{users:[{name:'abel',email:'abel@mit.edu',password:'secret',balance:100}]}}>
           <div className="container" style={{padding: "20px"}}>
             <Route path="/" exact component={Home} />

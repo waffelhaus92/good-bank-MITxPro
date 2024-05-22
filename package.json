@@ -10,6 +10,8 @@
   "author": "cory_martinez@rocketmail.com",
   "license": "MIT",
   "dependencies": {
+    "@babel/core": "^7.24.5",
+    "@babel/preset-env": "^7.24.5",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
