@@ -2,7 +2,7 @@ var express = require('express');
 var app     = express();
 var cors    = require('cors');
 var dal     = require('./dal.js');
-const e = require('express');
+const { generateToken, verifyToken } = require('./authMid.js');
 
 // used to serve static files from public directory
 app.use(express.static('public'));
@@ -35,28 +35,27 @@ app.get('/account/create/:name/:email/:password', function (req, res) {
 
 // login user 
 app.get('/account/login/:email/:password', function (req, res) {
-
-    dal.find(req.params.email).
-        then((user) => {
-
-            // if user exists, check password
-            if(user.length > 0){
-                if (user[0].password === req.params.password){
-                    res.send(user[0]);
+    dal.find(req.params.email)
+        .then((user) => {
+            if (user.length > 0) {
+                if (user[0].password === req.params.password) {
+                    const token = generateToken({ email: req.params.email });
+                    res.json({ user: user[0], token }); // Send user and token upon successful login
+                } else {
+                    res.status(401).send('Login failed: wrong password');
                 }
-                else{
-                    res.send('Login failed: wrong password');
-                }
+            } else {
+                res.status(404).send('Login failed: user not found');
             }
-            else{
-                res.send('Login failed: user not found');
-            }
-    });
-    
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            res.status(500).send('An error occurred while logging in');
+        });
 });
 
 // find user account
-app.get('/account/find/:email', function (req, res) {
+app.get('/account/find/:email', verifyToken, function (req, res) {
 
     dal.find(req.params.email).
         then((user) => {
@@ -66,7 +65,7 @@ app.get('/account/find/:email', function (req, res) {
 });
 
 // find one user by email - alternative to find
-app.get('/account/findOne/:email', function (req, res) {
+app.get('/account/findOne/:email', verifyToken, function (req, res) {
 
     dal.findOne(req.params.email).
         then((user) => {
@@ -77,7 +76,7 @@ app.get('/account/findOne/:email', function (req, res) {
 
 
 // update - deposit/withdraw amount
-app.get('/account/update/:email/:amount', function (req, res) {
+app.get('/account/update/:email/:amount', verifyToken, function (req, res) {
 
     var amount = Number(req.params.amount);
 
@@ -89,7 +88,7 @@ app.get('/account/update/:email/:amount', function (req, res) {
 });
 
 // all accounts
-app.get('/account/all', function (req, res) {
+app.get('/account/all', verifyToken, function (req, res) {
 
     dal.all().
         then((docs) => {

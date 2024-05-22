@@ -4,14 +4,21 @@
   "description": "banking app for school.",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "react-scripts start"
   },
   "author": "cory_martinez@rocketmail.com",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "lowdb": "^1.0.0",
-    "mongodb": "^3.7.4"
+    "mongodb": "^3.7.4",
+    "mongoose": "^8.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.23.1",
+    "react-scripts": "^5.0.1"
   }
 }

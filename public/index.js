@@ -1,3 +1,15 @@
+const logout = () => {
+  // An alert to notify the user they have logged out. 
+  alert('You have been logged out successfully');
+  console.log('Token deleted');
+
+  // Redirect to the login page after 1 second
+  setTimeout(() => {
+    localStorage.removeItem('token');
+    window.location.href = '/login';
+  }, 1000); 
+};
+
 function Spa() {
   return (
     <HashRouter>

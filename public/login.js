@@ -1,17 +1,24 @@
 function Login(){
   const [show, setShow]     = React.useState(true);
   const [status, setStatus] = React.useState('');    
-
+  const [user, setUser]     = React.useState(null);
+  
   return (
-    <Card
-      bgcolor="secondary"
-      header="Login"
-      status={status}
-      body={show ? 
-        <LoginForm setShow={setShow} setStatus={setStatus}/> :
-        <LoginMsg setShow={setShow} setStatus={setStatus}/>}
-    />
-  ) 
+    <>
+      <Card
+        bgcolor="secondary"
+        header="Login"
+        status={status}
+        body={
+          show ? (
+            <LoginForm setShow={setShow} setStatus={setStatus} setUser={setUser} />
+          ) : (
+            <LoginMsg setShow={setShow} setStatus={setStatus} />
+          )
+        }
+      />
+    </>
+  );
 }
 
 function LoginMsg(props){
@@ -28,23 +35,32 @@ function LoginMsg(props){
 function LoginForm(props){
   const [email, setEmail]       = React.useState('');
   const [password, setPassword] = React.useState('');
+  const { setUser } = props;
 
-  function handle(){
+  function handle() {
     fetch(`/account/login/${email}/${password}`)
-    .then(response => response.text())
-    .then(text => {
-        try {
-            const data = JSON.parse(text);
-            props.setStatus('');
-            props.setShow(false);
-            console.log('JSON:', data);
-        } catch(err) {
-            props.setStatus(text)
-            console.log('err:', text);
+      .then(response => response.json())
+      .then(data => {
+        if (data.token) {
+          console.log('Token', data.token);
+          // Successful login
+          localStorage.setItem('token', data.token);
+          setUser(data.user);
+          setEmail('');
+          setPassword('');
+          // Update show state to display success message
+          props.setShow(false);
+          // Optional: Navigate to a protected route
+          // props.history.push('/dashboard');
+        } else {
+          props.setStatus(data.message);
         }
-    });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        props.setStatus('An error occurred while logging in');
+      });
   }
-
 
   return (<>
 
