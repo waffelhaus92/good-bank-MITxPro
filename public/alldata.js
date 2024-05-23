@@ -40,7 +40,7 @@ function AllData() {
       <Card
         txtcolor="black"
         header="All of the users and their data"
-        title="Admin eyes only."
+        title="User data."
         text={
           data ? (
             <div>
