@@ -11,7 +11,7 @@ function Withdraw() {
     }
   
     fetch(`/account/update/${email}/-${amount}`, {
-      method: 'GET', // Assuming update endpoint is a GET request (verify with backend)
+      method: 'GET', 
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -66,7 +66,7 @@ function WithdrawMsg(props) {
           props.setStatus('');
         }}
       >
-        Deposit again
+        Make another withdrawl?
       </button>
     </>
   );

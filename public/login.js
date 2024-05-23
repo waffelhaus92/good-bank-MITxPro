@@ -49,9 +49,9 @@ function LoginForm(props){
           setEmail('');
           setPassword('');
           // Update show state to display success message
+          window.parent.postMessage({ type: 'USER_LOGIN', data: data.user }, '*');
           props.setShow(false);
-          // Optional: Navigate to a protected route
-          // props.history.push('/dashboard');
+          props.setUser(data.user);
         } else {
           props.setStatus(data.message);
         }

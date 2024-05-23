@@ -1,6 +1,6 @@
-function NavBar({ logout }) {
+function NavBar({ user, logout }) {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
       <a className="navbar-brand" href="#">
         FakeBank
       </a>
@@ -51,6 +51,16 @@ function NavBar({ logout }) {
             <a className="nav-link" href="#/alldata/">
               AllData
             </a>
+          </li>
+          <li
+            className="nav-item ml-auto"
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              float: "flex-end",
+            }}
+          >
+            {user?.name && <h3>{user.name}</h3>}
           </li>
         </ul>
       </div>
