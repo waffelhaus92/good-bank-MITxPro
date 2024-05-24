@@ -30,11 +30,11 @@ Features:
  2. Convenient deposit and withdrawal options.
  3. Instant access to account balances.
  4. Comprehensive overview of account balances.
+ 5. Adding the secure authentication of users.
     
 Future Features:
  1. Transaction history.
- 2. Adding the secure authentication of users.
- 3. Adding roles to make only certain parts of the website visible to authorized users.
+ 2. Adding roles to make only certain parts of the website visible to authorized users.
 
 License: 
 This project is licensed under the MIT license. It is included in the project files. 
