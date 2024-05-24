@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 // Middleware for generating JWT
 const generateToken = (user) => {
-    return jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' }); // Token expires in 1 hour
+    return jwt.sign({ email: user.email }, 'your_secret_key', { expiresIn: '1h' }); // Token expires in 1 hour
 };
 
 // Middleware for verifying JWT
@@ -23,7 +23,7 @@ const verifyToken = (req, res, next) => {
             return res.status(401).json({ message: 'Token expired' });
         }
         // Attach decoded user information to the request object for further processing
-        req.userId = decoded.userId;
+        req.user = decoded;
         next();
     });
 };

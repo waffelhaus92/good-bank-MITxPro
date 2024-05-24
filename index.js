@@ -89,12 +89,12 @@ app.get("/account/find/:email", verifyToken, function (req, res) {
     if (user) {
       res.send(user);
     }else {
-      res.status(404).send("User not found")
+      res.status(404).send("User not found.")
     }
   });
 });
 
-// find one user by email - alternative to find
+// find one user by email 
 app.get("/account/findOne/:email", verifyToken, function (req, res) {
   dal.findOne(req.params.email).then((user) => {
     console.log(user);
